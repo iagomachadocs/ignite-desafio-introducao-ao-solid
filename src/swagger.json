@@ -1,0 +1,330 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Documentação do Desafio 1",
+		"description": "Esta é uma API de cadastro de usuários desenvolvida como solução do Desafio 1 do Capítulo 2 do Ignite Node.JS",
+		"version": "1.0.0",
+		"contact": {
+			"email": "iagomachadocs@gmail.com"
+		}
+	},
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Cria um novo usuário",
+        "description": "Cria um novo usuário com o nome e email fornecidos.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Iago",
+                  "email": "iagomachadocs@gmail.com"
+                }
+              }
+            }
+          }
+        }, 
+        "responses": {
+          "201": {
+            "description": "Usuário cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "array",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+                  "example": {
+                    "id": "80b6bd07-6254-4498-a486-558d6bb777d0",
+                    "admin": false,
+                    "created_at": "2021-07-25T21:43:10.032Z",
+                    "updated_at": "2021-07-25T21:43:10.032Z",
+                    "name": "Iago",
+                    "email": "iagomachadocs@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email já está sendo utilizado.",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User already exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Lista todos os usuários",
+        "description": "Lista todos os usuários cadastrados. Disponível apenas para admins.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "description": "Id do usuário que está solicitando a listagem (deve ser admin)",
+            "schema":{
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listagem realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "array",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "579b8788-b4d3-40f6-8f25-b8b8dde64422",
+                      "admin": true,
+                      "created_at": "2021-07-27T23:36:06.421Z",
+                      "updated_at": "2021-07-27T23:38:30.329Z",
+                      "name": "Iago",
+                      "email": "iagomachadocs@gmail.com"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário não encontrado ou o usuário não é um admin.",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Retorna um usuário",
+        "description": "Retorna informações de um usuário específico",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "Id do usuário que será retornado",
+            "schema":{
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário retornado com sucesso",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+                  "example": {
+                    "id": "ab28a467-6ff1-4632-a495-ab05e0d5f48a",
+                    "admin": false,
+                    "created_at": "2021-07-27T23:47:49.142Z",
+                    "updated_at": "2021-07-27T23:47:49.142Z",
+                    "name": "Iago",
+                    "email": "iagomachadocs@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Usuários"],
+        "summary": "Torna um usuário admin",
+        "description": "Torna um usuário admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "Id do usuário que será transformado em admin",
+            "schema":{
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário transformado em admin com sucesso",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+                  "example": {
+                    "id": "ab28a467-6ff1-4632-a495-ab05e0d5f48a",
+                    "admin": true,
+                    "created_at": "2021-07-27T23:47:49.142Z",
+                    "updated_at": "2021-07-27T23:47:49.142Z",
+                    "name": "Iago",
+                    "email": "iagomachadocs@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
